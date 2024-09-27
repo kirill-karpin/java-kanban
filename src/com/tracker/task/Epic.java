@@ -1,43 +1,43 @@
 package com.tracker.task;
 
+import java.util.ArrayList;
+
 public class Epic extends Task {
 
+    protected TaskType type = TaskType.EPIC;
+
+    protected ArrayList<Integer> subTasksIds = new ArrayList<>();
+
     public Epic(int id, String name, String description, Status status) {
-        super(id, name, description, status);
+        super(id, name, description, Status.NEW);
     }
 
-    public void addTask(Task task) {
-        tasks.put(task.getId(), task);
+    public void addSubTask(Integer id) {
+        subTasksIds.add(id);
     }
 
+    public void removeTask(Integer id) {
+        subTasksIds.remove(id);
+    }
 
-    @Override
-    public Status getStatus() {
-        if (tasks.isEmpty()) {
-            return Status.NEW;
-        }
+    public ArrayList<Integer> getSubTasks() {
+        return subTasksIds;
+    }
 
-        for (Task task : tasks.values()) {
-            if (task.getStatus() == Status.IN_PROGRESS || task.getStatus() == Status.NEW) {
-                return Status.IN_PROGRESS;
-            }
-        }
+    public void setSubTasks(ArrayList<Integer> subTasks) {
+        this.subTasksIds = subTasks;
+    }
 
-        return Status.DONE;
+    public TaskType getType() {
+        return type;
     }
 
     @Override
     public String toString() {
-        String tasksList = "";
-        for (Task task : tasks.values()) {
-            tasksList += task.toString() + "\n";
-        }
-        return " Эпик  #" + id + "\n" +
+        return  " Эпик  #" + id + "\n" +
                 "  Статус: " + getStatus() + "\n" +
                 "  Название: " + name + "\n" +
                 "  Описание: " + description + "\n" +
-                "  Подзадачи : " + "\n"
-                + tasksList;
-
+                "  Подзадачи : " + "\n";
     }
 }
