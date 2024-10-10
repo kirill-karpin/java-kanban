@@ -8,8 +8,8 @@ public class Epic extends Task {
 
     protected ArrayList<Integer> subTasksIds = new ArrayList<>();
 
-    public Epic(int id, String name, String description, Status status) {
-        super(id, name, description, Status.NEW);
+    public Epic(String name, String description) {
+        super(name, description, Status.NEW);
     }
 
     public void addSubTask(Integer id) {
@@ -34,10 +34,11 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return  " Эпик  #" + id + "\n" +
-                "  Статус: " + getStatus() + "\n" +
-                "  Название: " + name + "\n" +
-                "  Описание: " + description + "\n" +
-                "  Подзадачи : " + "\n";
+        return "Epic{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                '}';
     }
 }

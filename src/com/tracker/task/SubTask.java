@@ -5,9 +5,8 @@ public class SubTask extends Task {
     protected TaskType type = TaskType.SUBTASK;
     private Integer epicId;
 
-    public SubTask(int id, Integer epicId,  String name, String description, Status status) {
-        super(id, name, description, status);
-        this.epicId = epicId;
+    public SubTask(String name, String description, Status status) {
+        super(name, description, status);
     }
 
     public Integer getEpicId() {
@@ -24,9 +23,11 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return  "   Подзадача #" + id + "\n" +
-                "    Статус: " + status + "\n" +
-                "    Название: " + name + "\n" +
-                "    Описание: " + description + "\n";
+        return "SubTask{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                '}';
     }
 }

@@ -1,25 +1,20 @@
 package com.tracker.task;
 
+import java.util.Objects;
+
 import static com.tracker.task.TaskType.TASK;
 
-public class Task {
+public class Task implements Cloneable {
     protected int id;
     protected String name;
     protected String description;
     protected Status status;
     protected TaskType type = TASK;
 
-    public Task(int id, String name, String description, Status status) {
-        this.id = id;
+    public Task(String name, String description, Status status) {
         this.name = name;
         this.description = description;
         this.status = status;
-    }
-
-    public Task(int id, String name, String description) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
     }
 
     public int getId() {
@@ -60,13 +55,38 @@ public class Task {
 
     @Override
     public String toString() {
-        return  " Задача #" + id + "\n" +
-                "  Статус: " + status + "\n" +
-                "  Название: " + name + "\n" +
-                "  Описание: " + description + "\n";
+        return "Task{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                '}';
     }
 
     public void setStatusDone() {
         this.status = Status.DONE;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Task task)) return false;
+        return id == task.id && Objects.equals(name, task.name) && Objects.equals(description, task.description) && status == task.status && type == task.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, type);
+    }
+
+    @Override
+    public Task clone() {
+        try {
+            Task clone = (Task) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }
