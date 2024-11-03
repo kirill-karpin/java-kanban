@@ -8,8 +8,8 @@ import java.util.HashMap;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
-    public Node<Task> head;
-    public Node<Task> tail;
+    protected Node<Task> head;
+    protected Node<Task> tail;
     private final HashMap<Integer, Node<Task>> indexMap = new HashMap<>();
 
     @Override

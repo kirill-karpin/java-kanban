@@ -13,9 +13,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class InMemoryHistoryManagerTest {
+class InMemoryHistoryManagerTest {
 
-    static HistoryManager historyManager;
+    private static HistoryManager historyManager;
 
     @BeforeEach
     void init() {
@@ -119,8 +119,8 @@ public class InMemoryHistoryManagerTest {
         Node<Task> node2 = new Node<>(task2);
         historyManager.linkLast(node2);
 
-        assertEquals(node1.next, node2);
-        assertEquals(node2.prev, node1);
+        assertEquals(node1.getNext(), node2);
+        assertEquals(node2.getPrev(), node1);
         assertEquals(historyManager.getTail(), node2);
     }
 
