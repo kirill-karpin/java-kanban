@@ -7,9 +7,14 @@ import java.util.ArrayList;
 
 public interface HistoryManager {
     void addTask(Task task);
+
     ArrayList<Task> getHistory();
+
     void linkLast(Node<Task> node);
+
     void removeTask(int index);
+
     Node<Task> getHead();
+
     Node<Task> getTail();
 }
