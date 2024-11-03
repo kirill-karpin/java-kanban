@@ -1,4 +1,4 @@
-package tests.com.tracker;
+package test.com.tracker;
 
 import com.tracker.Managers;
 import com.tracker.interfaces.TaskManager;

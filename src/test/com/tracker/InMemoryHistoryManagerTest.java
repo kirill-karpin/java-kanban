@@ -1,4 +1,4 @@
-package tests.com.tracker;
+package test.com.tracker;
 
 import com.tracker.InMemoryHistoryManager;
 import com.tracker.Managers;
@@ -127,11 +127,11 @@ class InMemoryHistoryManagerTest {
     @Test
     void testLinkSize() {
         Task task = new Task("Test Task1", "Test Description", Status.DONE);
-        historyManager.linkLast(new Node(task));
+        historyManager.linkLast(new Node<>(task));
         Task task2 = new Task("Test Task2", "Test Description", Status.DONE);
-        historyManager.linkLast(new Node(task2));
+        historyManager.linkLast(new Node<>(task2));
         Task task3 = new Task("Test Task3", "Test Description", Status.DONE);
-        historyManager.linkLast(new Node(task3));
+        historyManager.linkLast(new Node<>(task3));
         assertEquals(3, historyManager.getHistory().size());
     }
 
