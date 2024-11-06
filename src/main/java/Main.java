@@ -9,8 +9,6 @@ import com.tracker.task.Task;
 
 public class Main {
 
-    private static InMemoryTaskManager manager;
-
     public static void main(String[] args) {
 
         System.out.println("Поехали!");
