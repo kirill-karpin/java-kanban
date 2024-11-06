@@ -1,8 +1,5 @@
-package test.com.tracker;
+package com.tracker;
 
-import com.tracker.InMemoryHistoryManager;
-import com.tracker.Managers;
-import com.tracker.Node;
 import com.tracker.interfaces.HistoryManager;
 import com.tracker.task.Status;
 import com.tracker.task.Task;
