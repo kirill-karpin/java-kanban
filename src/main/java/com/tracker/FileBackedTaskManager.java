@@ -10,12 +10,16 @@ import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
-    final public static String FILE_NAME = "database.csv";
-    final private String DELIMITER = ";";
-    boolean fileInitialized = true;
+    final private static String FILE_NAME = "database.csv";
+    final private char DELIMITER = ';';
+    private boolean fileInitialized = true;
 
     public FileBackedTaskManager(HistoryManager historyManager) {
         super(historyManager);
+    }
+
+    public static String getFileName() {
+        return FILE_NAME;
     }
 
     public List<String[]> parseFile(File file) {
@@ -24,7 +28,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             while (br.ready()) {
                 String line = br.readLine();
-                tasks.add(line.split(DELIMITER));
+                tasks.add(line.split(String.valueOf(DELIMITER)));
             }
             return tasks;
         } catch (IOException e) {
@@ -76,7 +80,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             item.add(data.getOrDefault(key, ""));
         }
 
-        return String.join(DELIMITER, item);
+        return String.join(String.valueOf(DELIMITER), item);
     }
 
     public String serialize(String[] header) {
@@ -112,7 +116,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public void save() {
         String[] header = {"id", "type", "name", "status", "description", "epic"};
         String csvData = serialize(header);
-        String data = String.join(DELIMITER, header) + "\n" +
+        String data = String.join(String.valueOf(DELIMITER), header) + "\n" +
                 csvData;
         saveToFile(getFile(), data);
     }

@@ -24,7 +24,7 @@ class FileBackedTaskManagerTest {
     @Test
     void readFileEmpty() throws IOException {
         FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(null);
-        File file = File.createTempFile(FileBackedTaskManager.FILE_NAME, null);
+        File file = File.createTempFile(FileBackedTaskManager.getFileName(), null);
         List<String[]> result = fileBackedTaskManager.parseFile(file);
         assertEquals(0, result.size());
     }
@@ -32,7 +32,7 @@ class FileBackedTaskManagerTest {
     @Test
     void saveEmptyFile() throws IOException {
         FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(null);
-        File file = File.createTempFile(FileBackedTaskManager.FILE_NAME, ".csv");
+        File file = File.createTempFile(FileBackedTaskManager.getFileName(), ".csv");
         Boolean result = fileBackedTaskManager.saveToFile(file, "");
         assertTrue(result);
     }
@@ -41,7 +41,7 @@ class FileBackedTaskManagerTest {
     void saveFileToFile() throws IOException {
         Epic epic = new Epic("Первая задача", "Описание");
         FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(null);
-        File file = File.createTempFile(FileBackedTaskManager.FILE_NAME, ".csv");
+        File file = File.createTempFile(FileBackedTaskManager.getFileName(), ".csv");
 
         Boolean result = fileBackedTaskManager.saveToFile(file, fileBackedTaskManager.serializeTask(epic, header));
         assertTrue(result);
@@ -51,7 +51,7 @@ class FileBackedTaskManagerTest {
     void saveFileAndParseFIle() throws IOException {
         Epic epic = new Epic("Первая задача", "Описание");
         FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(null);
-        File file = File.createTempFile(FileBackedTaskManager.FILE_NAME, ".csv");
+        File file = File.createTempFile(FileBackedTaskManager.getFileName(), ".csv");
         Boolean result = fileBackedTaskManager.saveToFile(file, fileBackedTaskManager.serializeTask(epic, header));
         assertTrue(result);
         List<String[]> result2 = fileBackedTaskManager.parseFile(file);
@@ -62,7 +62,7 @@ class FileBackedTaskManagerTest {
     void loadFromFile() throws IOException {
         Epic epic = new Epic("Первая задача", "Описание");
         FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(null);
-        File file = File.createTempFile(FileBackedTaskManager.FILE_NAME, ".csv");
+        File file = File.createTempFile(FileBackedTaskManager.getFileName(), ".csv");
         Boolean result = fileBackedTaskManager.saveToFile(file, fileBackedTaskManager.serializeTask(epic, header));
         assertTrue(result);
         fileBackedTaskManager.loadFromFile(file);
