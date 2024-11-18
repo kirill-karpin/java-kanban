@@ -10,8 +10,8 @@ import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
-    final protected static String FILE_NAME = "database.csv";
-    final protected char CSV_DELIMITER = ';';
+    private static String FILE_NAME = "database.csv";
+    private char CSV_DELIMITER = ';';
     private boolean fileInitialized = true;
 
     public FileBackedTaskManager(HistoryManager historyManager) {
