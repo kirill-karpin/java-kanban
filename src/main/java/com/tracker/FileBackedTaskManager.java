@@ -10,7 +10,6 @@ import java.util.Map;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
-    private final String FILE_NAME = "database.csv";
     private boolean fileInitialized = true;
 
     public FileBackedTaskManager(HistoryManager historyManager) {
@@ -18,7 +17,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public static String getFileName() {
-        return FILE_NAME;
+        return "database.csv";
     }
 
     public static String getDelimiter() {
@@ -105,7 +104,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public File getFile() {
-        File file = new File(FILE_NAME);
+        File file = new File(getFileName());
         if (!fileInitialized) {
             if (file.exists()) {
                 loadFromFile(file);
