@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
-    private final static String FILE_NAME = "database.csv";
+    private final String FILE_NAME = "database.csv";
     private boolean fileInitialized = true;
 
     public FileBackedTaskManager(HistoryManager historyManager) {
