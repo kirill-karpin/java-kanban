@@ -1,8 +1,6 @@
 package com.tracker;
 
-import com.tracker.interfaces.TaskManager;
 import com.tracker.task.Epic;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -13,13 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FileBackedTaskManagerTest {
-    private static TaskManager taskManager;
-    private static String[] header = {"id", "type", "name", "status", "description", "epic"};
-
-    @BeforeEach
-    void setUp() {
-        taskManager = Managers.getDefaultPersist();
-    }
+    private final String[] header = {"id", "type", "name", "status", "description", "epic"};
 
     @Test
     void readFileEmpty() throws IOException {

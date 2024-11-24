@@ -5,12 +5,12 @@ import com.tracker.task.*;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
-    private static String FILE_NAME = "database.csv";
+    private final static String FILE_NAME = "database.csv";
     private boolean fileInitialized = true;
 
     public FileBackedTaskManager(HistoryManager historyManager) {
@@ -77,7 +77,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public String serializeTask(Task task, String[] header) {
-        HashMap<String, String> data = task.getData();
+        Map<String, String> data = task.getData();
         ArrayList<String> item = new ArrayList<>();
         for (String key : header) {
             item.add(data.getOrDefault(key, ""));

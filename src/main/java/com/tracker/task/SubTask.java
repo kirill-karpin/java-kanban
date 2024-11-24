@@ -1,6 +1,6 @@
 package com.tracker.task;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class SubTask extends Task {
 
@@ -34,8 +34,8 @@ public class SubTask extends Task {
     }
 
     @Override
-    public HashMap<String, String> getData() {
-        HashMap<String, String> data = super.getData();
+    public Map<String, String> getData() {
+        Map<String, String> data = super.getData();
         data.put("epic", String.valueOf(epicId));
         return data;
     }

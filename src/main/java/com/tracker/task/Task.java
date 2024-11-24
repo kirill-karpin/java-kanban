@@ -1,6 +1,7 @@
 package com.tracker.task;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.tracker.task.TaskType.TASK;
@@ -91,7 +92,7 @@ public class Task implements Cloneable {
         }
     }
 
-    public HashMap<String, String> getData() {
+    public Map<String, String> getData() {
         HashMap<String, String> data = new HashMap<>();
         data.put("id", String.valueOf(id));
         data.put("name", name);
