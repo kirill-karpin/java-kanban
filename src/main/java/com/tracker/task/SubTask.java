@@ -1,5 +1,7 @@
 package com.tracker.task;
 
+import java.util.Map;
+
 public class SubTask extends Task {
 
     protected TaskType type = TaskType.SUBTASK;
@@ -29,5 +31,12 @@ public class SubTask extends Task {
                 ", description='" + description + '\'' +
                 ", status=" + status +
                 '}';
+    }
+
+    @Override
+    public Map<String, String> getData() {
+        Map<String, String> data = super.getData();
+        data.put("epic", String.valueOf(epicId));
+        return data;
     }
 }

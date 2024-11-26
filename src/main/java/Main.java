@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] args) {
 
         System.out.println("Поехали!");
-        InMemoryTaskManager manager = (InMemoryTaskManager) Managers.getDefault();
+        InMemoryTaskManager manager = (InMemoryTaskManager) Managers.getDefaultPersist();
 
         manager.add(new Task("Первая задача", "Описание", Status.NEW));
 
