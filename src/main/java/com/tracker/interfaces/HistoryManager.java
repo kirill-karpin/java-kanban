@@ -2,19 +2,18 @@ package com.tracker.interfaces;
 
 import com.tracker.Node;
 import com.tracker.task.Task;
-
 import java.util.ArrayList;
 
 public interface HistoryManager {
-    void addTask(Task task);
+  void addTask(Task task);
 
-    ArrayList<Task> getHistory();
+  ArrayList<Task> getHistory();
 
-    void linkLast(Node<Task> node);
+  void linkLast(Node<Task> node);
 
-    void removeTask(int index);
+  void removeTask(int index);
 
-    Node<Task> getHead();
+  Node<Task> getHead();
 
-    Node<Task> getTail();
+  Node<Task> getTail();
 }
