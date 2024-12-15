@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class Task implements Cloneable {
+
   protected int id;
   protected String name;
   protected String description;
@@ -96,8 +97,12 @@ public class Task implements Cloneable {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof Task task)) return false;
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Task task)) {
+      return false;
+    }
     return id == task.id
         && Objects.equals(name, task.name)
         && Objects.equals(description, task.description)

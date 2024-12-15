@@ -1,17 +1,20 @@
 package com.tracker;
 
+import static com.tracker.task.Status.DONE;
+import static com.tracker.task.Status.NEW;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import com.tracker.interfaces.TaskManager;
 import com.tracker.task.Task;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import static com.tracker.task.Status.DONE;
-import static com.tracker.task.Status.NEW;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class InMemoryTaskManagerTest {
 

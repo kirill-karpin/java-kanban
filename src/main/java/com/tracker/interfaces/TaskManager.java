@@ -6,6 +6,7 @@ import com.tracker.task.Task;
 import java.util.List;
 
 public interface TaskManager {
+
   Task getTask(int id);
 
   Epic getEpic(int id);

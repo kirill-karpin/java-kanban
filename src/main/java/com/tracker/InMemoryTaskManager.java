@@ -8,9 +8,15 @@ import com.tracker.task.SubTask;
 import com.tracker.task.Task;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.TreeSet;
 
 public class InMemoryTaskManager implements TaskManager {
+
   private int taskIdCounter = 1;
   private final HistoryManager historyManager;
   private final HashMap<Integer, Task> tasks = new HashMap<>();

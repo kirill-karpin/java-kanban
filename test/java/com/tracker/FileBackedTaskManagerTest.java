@@ -14,6 +14,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class FileBackedTaskManagerTest {
+
   private final String[] header = FileBackedTaskManager.getDefaultHeader();
 
   @Test
