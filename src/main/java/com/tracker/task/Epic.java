@@ -34,20 +34,31 @@ public class Epic extends Task {
     return type;
   }
 
-    @Override
-    public String toString() {
-        return "Epic{" +
-                "type=" + type +
-                ", subTasksIds=" + subTasksIds +
-                ", id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", status=" + status +
-                ", type=" + type +
-                ", duration=" + duration +
-                ", startTime=" + startTime +
-                '}';
-    }
+  @Override
+  public String toString() {
+    return "Epic{"
+        + "type="
+        + type
+        + ", subTasksIds="
+        + subTasksIds
+        + ", id="
+        + id
+        + ", name='"
+        + name
+        + '\''
+        + ", description='"
+        + description
+        + '\''
+        + ", status="
+        + status
+        + ", type="
+        + type
+        + ", duration="
+        + duration
+        + ", startTime="
+        + startTime
+        + '}';
+  }
 
   public void setDuration(Duration epicDuration) {
     this.duration = epicDuration;
