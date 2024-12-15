@@ -1,5 +1,7 @@
 package com.tracker.task;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -12,8 +14,18 @@ public class Task implements Cloneable {
     protected String description;
     protected Status status;
     protected TaskType type = TASK;
+    protected Duration duration;
+    protected LocalDateTime startTime;
 
-    public Task(String name, String description, Status status) {
+    public Task(String name, String description, Status status, Duration duration, LocalDateTime startTime) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.duration = duration;
+        this.startTime = startTime;
+    }
+
+    protected Task(String name, String description, Status status) {
         this.name = name;
         this.description = description;
         this.status = status;
@@ -62,6 +74,9 @@ public class Task implements Cloneable {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
+                ", type=" + type +
+                ", duration=" + duration +
+                ", startTime=" + startTime +
                 '}';
     }
 
@@ -73,12 +88,23 @@ public class Task implements Cloneable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Task task)) return false;
-        return id == task.id && Objects.equals(name, task.name) && Objects.equals(description, task.description) && status == task.status && type == task.type;
+        return id == task.id && Objects.equals(
+                name,
+                task.name
+        ) && Objects.equals(
+                description,
+                task.description
+        ) && status == task.status && type == task.type;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, type);
+        return Objects.hash(
+                id,
+                name,
+                description,
+                type
+        );
     }
 
     @Override
@@ -94,11 +120,54 @@ public class Task implements Cloneable {
 
     public Map<String, String> getData() {
         HashMap<String, String> data = new HashMap<>();
-        data.put("id", String.valueOf(id));
-        data.put("name", name);
-        data.put("description", description);
-        data.put("status", status.toString());
-        data.put("type", getType().toString());
+        data.put(
+                "id",
+                String.valueOf(id)
+        );
+        data.put(
+                "name",
+                name
+        );
+        data.put(
+                "description",
+                description
+        );
+        data.put(
+                "status",
+                status.toString()
+        );
+        data.put(
+                "type",
+                getType().toString()
+        );
+        data.put(
+                "duration",
+                getDuration() != null ? String.valueOf(getDuration().toMinutes()) : ""
+        );
+        data.put(
+                "startTime",
+                getStartTime() != null ? getStartTime().toString() : ""
+        );
         return data;
+    }
+
+    public LocalDateTime getStartTime() {
+        if (startTime == null) {
+            return null;
+        }
+        return startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return startTime.plus(getDuration());
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public boolean isOverlap(Task task) {
+        return getEndTime().isAfter(task.getStartTime())
+                && getStartTime().isBefore(task.getEndTime());
     }
 }

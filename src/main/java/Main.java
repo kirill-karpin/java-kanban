@@ -6,6 +6,9 @@ import com.tracker.task.Status;
 import com.tracker.task.SubTask;
 import com.tracker.task.Task;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 
 public class Main {
 
@@ -14,15 +17,43 @@ public class Main {
         System.out.println("Поехали!");
         InMemoryTaskManager manager = (InMemoryTaskManager) Managers.getDefaultPersist();
 
-        manager.add(new Task("Первая задача", "Описание", Status.NEW));
+        LocalDateTime now = LocalDateTime.now();
+        manager.add(new Task(
+                "Первая задача",
+                "Описание",
+                Status.NEW,
+                Duration.ofMinutes(10),
+                now
+        ));
 
-        int epicId = manager.add(new Epic("Первая задача", "Описание"));
+        int epicId = manager.add(new Epic(
+                "Первый эпик",
+                "Описание"
+        ));
         manager.getEpic(epicId);
-        int subTaskId = manager.add(new SubTask("Первая подзадача", "Описание", Status.NEW));
+        int subTaskId = manager.add(new SubTask(
+                "Первая подзадача",
+                "Описание",
+                Status.NEW,
+                null,
+                null
+        ));
         SubTask subTask = manager.getSubtask(subTaskId);
-        manager.addEpicSubTask(epicId, subTask);
+        manager.addEpicSubTask(
+                epicId,
+                subTask
+        );
         subTask.setStatusDone();
-        manager.addEpicSubTask(epicId, new SubTask("Вторая подзадача", "Описание", Status.DONE));
+        manager.addEpicSubTask(
+                epicId,
+                new SubTask(
+                        "Вторая подзадача",
+                        "Описание",
+                        Status.DONE,
+                        Duration.ofMinutes(10),
+                        now.plusMinutes(20)
+                )
+        );
         manager.getSubtask(subTaskId);
         manager.getEpic(epicId);
         printAllTasks(manager);

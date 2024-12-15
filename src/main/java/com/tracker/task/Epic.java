@@ -1,5 +1,7 @@
 package com.tracker.task;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Epic extends Task {
@@ -9,7 +11,11 @@ public class Epic extends Task {
     protected ArrayList<Integer> subTasksIds = new ArrayList<>();
 
     public Epic(String name, String description) {
-        super(name, description, Status.NEW);
+        super(
+                name,
+                description,
+                Status.NEW
+        );
     }
 
     public void addSubTask(Integer id) {
@@ -35,10 +41,24 @@ public class Epic extends Task {
     @Override
     public String toString() {
         return "Epic{" +
-                "id=" + id +
+                "type=" + type +
+                ", subTasksIds=" + subTasksIds +
+                ", id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
+                ", type=" + type +
+                ", duration=" + duration +
+                ", startTime=" + startTime +
                 '}';
     }
+
+    public void setDuration(Duration epicDuration) {
+        this.duration = epicDuration;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
 }

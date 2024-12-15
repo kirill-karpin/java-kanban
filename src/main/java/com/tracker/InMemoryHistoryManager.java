@@ -27,7 +27,10 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     public void linkLast(Node<Task> node) {
-        indexMap.put(node.data.getId(), node);
+        indexMap.put(
+                node.data.getId(),
+                node
+        );
 
         if (head == null) {
             head = node;

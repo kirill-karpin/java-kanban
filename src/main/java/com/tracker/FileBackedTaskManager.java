@@ -4,16 +4,19 @@ import com.tracker.interfaces.HistoryManager;
 import com.tracker.task.*;
 
 import java.io.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
-    private boolean fileInitialized = true;
+    private static boolean fileInitialized = false;
 
     public FileBackedTaskManager(HistoryManager historyManager) {
         super(historyManager);
+        getFile();
     }
 
     public static String getFileName() {
@@ -24,13 +27,21 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return ";";
     }
 
+    public static String[] getDefaultHeader() {
+        return new String[]{"id", "type", "name", "status", "description", "epic", "startTime", "duration"};
+    }
+
     public List<String[]> parseFile(File file) {
         List<String[]> tasks = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             while (br.ready()) {
                 String line = br.readLine();
-                tasks.add(line.split(getDelimiter()));
+                var item = line.split(
+                        getDelimiter(),
+                        -1
+                );
+                tasks.add(item);
             }
             return tasks;
         } catch (IOException e) {
@@ -50,22 +61,49 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
 
-    public void loadFromFile(File file) {
+    public void loadFromFile(File file, boolean firstLineIsHeader) {
         List<String[]> tasks = parseFile(file);
+
         for (String[] rowItem : tasks) {
+            if (firstLineIsHeader) {
+                firstLineIsHeader = false;
+                continue;
+            }
+
+            int durationMinutes = Integer.parseInt(!rowItem[7].isEmpty() ? rowItem[7] : "0");
+            Duration duration = Duration.ZERO.plusMinutes(durationMinutes);
+            LocalDateTime startAt = null;
+            if (!rowItem[6].isEmpty()) {
+                startAt = LocalDateTime.parse(rowItem[6]);
+            }
             switch (TaskType.valueOf(rowItem[1])) {
                 case TASK:
-                    Task task = new Task(rowItem[1], rowItem[2], Status.valueOf(rowItem[3]));
+                    Task task = new Task(
+                            rowItem[1],
+                            rowItem[2],
+                            Status.valueOf(rowItem[3]),
+                            duration,
+                            startAt
+                    );
                     task.setId(Integer.parseInt(rowItem[0]));
                     super.add(task);
                     break;
                 case EPIC:
-                    Epic epic = new Epic(rowItem[1], rowItem[2]);
+                    Epic epic = new Epic(
+                            rowItem[1],
+                            rowItem[2]
+                    );
                     epic.setId(Integer.parseInt(rowItem[0]));
                     super.add(epic);
                     break;
                 case SUBTASK:
-                    SubTask subTask = new SubTask(rowItem[1], rowItem[2], Status.valueOf(rowItem[3]));
+                    SubTask subTask = new SubTask(
+                            rowItem[1],
+                            rowItem[2],
+                            Status.valueOf(rowItem[3]),
+                            duration,
+                            startAt
+                    );
                     subTask.setId(Integer.parseInt(rowItem[0]));
                     super.add(subTask);
                     break;
@@ -79,36 +117,58 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         Map<String, String> data = task.getData();
         ArrayList<String> item = new ArrayList<>();
         for (String key : header) {
-            item.add(data.getOrDefault(key, ""));
+            item.add(data.getOrDefault(
+                    key,
+                    ""
+            ));
         }
 
-        return String.join(getDelimiter(), item);
+        return String.join(
+                getDelimiter(),
+                item
+        );
     }
 
     public String serialize(String[] header) {
         ArrayList<String> result = new ArrayList<>();
 
         for (Epic epic : super.getEpics()) {
-            result.add(serializeTask(epic, header));
+            result.add(serializeTask(
+                    epic,
+                    header
+            ));
         }
 
         for (Task task : super.getTasks()) {
-            result.add(serializeTask(task, header));
+            result.add(serializeTask(
+                    task,
+                    header
+            ));
         }
 
         for (SubTask subTask : super.getSubtasks()) {
-            result.add(serializeTask(subTask, header));
+            result.add(serializeTask(
+                    subTask,
+                    header
+            ));
         }
 
-        return String.join("\n", result);
+        return String.join(
+                "\n",
+                result
+        );
     }
 
     public File getFile() {
         File file = new File(getFileName());
+
         if (!fileInitialized) {
+            fileInitialized = true;
             if (file.exists()) {
-                loadFromFile(file);
-                fileInitialized = true;
+                loadFromFile(
+                        file,
+                        true
+                );
                 return file;
             }
         }
@@ -116,11 +176,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public void save() {
-        String[] header = {"id", "type", "name", "status", "description", "epic"};
+        String[] header = getDefaultHeader();
         String csvData = serialize(header);
-        String data = String.join(getDelimiter(), header) + "\n" +
+        String data = String.join(
+                getDelimiter(),
+                header
+        ) + "\n" +
                 csvData;
-        saveToFile(getFile(), data);
+        saveToFile(
+                getFile(),
+                data
+        );
     }
 
     @Override
