@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.tracker.exception.TaskAddException;
 import com.tracker.interfaces.TaskManager;
 import com.tracker.task.Task;
 import java.time.Duration;
@@ -26,7 +27,7 @@ class InMemoryTaskManagerTest {
   }
 
   @Test
-  void getTaskTest() {
+  void getTaskTest() throws TaskAddException {
     Task task =
         new Task(
             "Test addNewTask",
@@ -40,7 +41,7 @@ class InMemoryTaskManagerTest {
   }
 
   @Test
-  void addTaskTest() {
+  void addTaskTest() throws TaskAddException {
     Task task =
         new Task(
             "Test addNewTask",
@@ -63,7 +64,7 @@ class InMemoryTaskManagerTest {
   }
 
   @Test
-  void updateTaskTest() {
+  void updateTaskTest() throws TaskAddException {
     Task task =
         new Task(
             "Test addNewTask",
@@ -87,7 +88,7 @@ class InMemoryTaskManagerTest {
   }
 
   @Test
-  void delete() {
+  void delete() throws TaskAddException {
     Task task =
         new Task(
             "Test addNewTask",
@@ -102,7 +103,7 @@ class InMemoryTaskManagerTest {
   }
 
   @Test
-  void addTwoOverlappingTasks() {
+  void addTwoOverlappingTasks() throws TaskAddException {
     LocalDateTime now = LocalDateTime.now();
     int durationMinutes = 15;
     Task task1 =
@@ -123,6 +124,6 @@ class InMemoryTaskManagerTest {
 
     taskManager.add(task1);
 
-    assertThrows(RuntimeException.class, () -> taskManager.add(task2));
+    assertThrows(TaskAddException.class, () -> taskManager.add(task2));
   }
 }

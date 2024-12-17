@@ -1,5 +1,6 @@
 package com.tracker;
 
+import com.tracker.exception.TaskAddException;
 import com.tracker.interfaces.HistoryManager;
 import com.tracker.interfaces.TaskManager;
 import com.tracker.task.Epic;
@@ -8,21 +9,23 @@ import com.tracker.task.SubTask;
 import com.tracker.task.Task;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.TreeSet;
 
 public class InMemoryTaskManager implements TaskManager {
 
   private int taskIdCounter = 1;
   private final HistoryManager historyManager;
-  private final HashMap<Integer, Task> tasks = new HashMap<>();
-  private final HashMap<Integer, Epic> epics = new HashMap<>();
-  private final HashMap<Integer, SubTask> subTasks = new HashMap<>();
-  private final TreeSet<Task> allTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime));
+  private final Map<Integer, Task> tasks = new HashMap<>();
+  private final Map<Integer, Epic> epics = new HashMap<>();
+  private final Map<Integer, SubTask> subTasks = new HashMap<>();
+  private final Set<Task> allTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime));
 
   public InMemoryTaskManager(HistoryManager historyManager) {
     this.historyManager = historyManager;
@@ -57,7 +60,7 @@ public class InMemoryTaskManager implements TaskManager {
   }
 
   @Override
-  public int add(Task task) {
+  public int add(Task task) throws TaskAddException {
     switch (task.getType()) {
       case EPIC:
         task.setId(getNewId());
@@ -68,7 +71,7 @@ public class InMemoryTaskManager implements TaskManager {
         break;
       case SUBTASK:
         if (!validateOverlapTask(task)) {
-          throw new RuntimeException("Overlapping task: " + task);
+          throw new TaskAddException("Overlapping task: " + task);
         }
 
         SubTask subTask = (SubTask) task;
@@ -79,7 +82,7 @@ public class InMemoryTaskManager implements TaskManager {
         break;
       case TASK:
         if (!validateOverlapTask(task)) {
-          throw new RuntimeException("Overlapping task: " + task);
+          throw new TaskAddException("Overlapping task: " + task);
         }
         task.setId(getNewId());
         tasks.put(task.getId(), task);
@@ -95,7 +98,7 @@ public class InMemoryTaskManager implements TaskManager {
   }
 
   private boolean validateOverlapTask(Task task) {
-    TreeSet<Task> prioritizedTasks = getPrioritizedTasks();
+    Set<Task> prioritizedTasks = getPrioritizedTasks();
     if (task.getStartTime() == null) {
       return true;
     }
@@ -163,7 +166,7 @@ public class InMemoryTaskManager implements TaskManager {
   }
 
   private Status getEpicStatus(Epic epic) {
-    ArrayList<Integer> tasksId = epic.getSubTasks();
+    Collection<Integer> tasksId = epic.getSubTasks();
     if (tasksId.isEmpty()) {
       return Status.NEW;
     }
@@ -179,7 +182,7 @@ public class InMemoryTaskManager implements TaskManager {
   }
 
   private Optional<LocalDateTime> getEpicStartTime(Epic epic) {
-    ArrayList<Integer> tasksId = epic.getSubTasks();
+    Collection<Integer> tasksId = epic.getSubTasks();
     if (tasksId.isEmpty()) {
       return Optional.empty();
     }
@@ -199,7 +202,7 @@ public class InMemoryTaskManager implements TaskManager {
   }
 
   private Duration getEpicDuration(Epic epic) {
-    ArrayList<Integer> tasksId = epic.getSubTasks();
+    Collection<Integer> tasksId = epic.getSubTasks();
     if (tasksId.isEmpty()) {
       return Duration.ZERO;
     }
@@ -245,7 +248,7 @@ public class InMemoryTaskManager implements TaskManager {
   }
 
   @Override
-  public void addEpicSubTask(int epicId, SubTask subTask) {
+  public void addEpicSubTask(int epicId, SubTask subTask) throws TaskAddException {
     Epic epic = getEpic(epicId);
     if (epic != null) {
       subTask.setEpicId(epicId);
@@ -265,7 +268,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
   }
 
-  public TreeSet<Task> getPrioritizedTasks() {
+  public Set<Task> getPrioritizedTasks() {
     return allTasks;
   }
 }

@@ -1,5 +1,6 @@
 package com.tracker.interfaces;
 
+import com.tracker.exception.TaskAddException;
 import com.tracker.task.Epic;
 import com.tracker.task.SubTask;
 import com.tracker.task.Task;
@@ -13,9 +14,9 @@ public interface TaskManager {
 
   Task getSubtask(int id);
 
-  int add(Task task);
+  int add(Task task) throws TaskAddException;
 
-  void addEpicSubTask(int epicId, SubTask subTask);
+  void addEpicSubTask(int epicId, SubTask subTask) throws TaskAddException;
 
   int update(Task updateTask);
 

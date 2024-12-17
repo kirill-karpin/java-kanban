@@ -4,12 +4,14 @@ import com.tracker.interfaces.HistoryManager;
 import com.tracker.task.Task;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
   protected Node<Task> head;
   protected Node<Task> tail;
-  private final HashMap<Integer, Node<Task>> indexMap = new HashMap<>();
+  private final Map<Integer, Node<Task>> indexMap = new HashMap<>();
 
   @Override
   public void addTask(Task task) {
@@ -21,7 +23,7 @@ public class InMemoryHistoryManager implements HistoryManager {
   }
 
   @Override
-  public ArrayList<Task> getHistory() {
+  public List<Task> getHistory() {
     return getTasks();
   }
 

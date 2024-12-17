@@ -3,12 +3,13 @@ package com.tracker.task;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class Epic extends Task {
 
   protected TaskType type = TaskType.EPIC;
 
-  protected ArrayList<Integer> subTasksIds = new ArrayList<>();
+  protected Collection<Integer> subTasksIds = new ArrayList<>();
 
   public Epic(String name, String description) {
     super(name, description, Status.NEW);
@@ -22,11 +23,11 @@ public class Epic extends Task {
     subTasksIds.remove(id);
   }
 
-  public ArrayList<Integer> getSubTasks() {
+  public Collection<Integer> getSubTasks() {
     return subTasksIds;
   }
 
-  public void setSubTasks(ArrayList<Integer> subTasks) {
+  public void setSubTasks(Collection<Integer> subTasks) {
     this.subTasksIds = subTasks;
   }
 

@@ -1,5 +1,6 @@
 import com.tracker.InMemoryTaskManager;
 import com.tracker.Managers;
+import com.tracker.exception.TaskAddException;
 import com.tracker.interfaces.TaskManager;
 import com.tracker.task.Epic;
 import com.tracker.task.Status;
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 
 public class Main {
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws TaskAddException {
 
     System.out.println("Поехали!");
     InMemoryTaskManager manager = (InMemoryTaskManager) Managers.getDefaultPersist();
