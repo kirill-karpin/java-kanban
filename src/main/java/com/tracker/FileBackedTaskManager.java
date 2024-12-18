@@ -104,7 +104,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             break;
         }
       } catch (TaskAddException e) {
-        System.out.println("Ошибка чтения задачи : " + e.getMessage());
+        throw new RuntimeException("Ошибка чтения задачи : " + e.getMessage());
       }
     }
   }
