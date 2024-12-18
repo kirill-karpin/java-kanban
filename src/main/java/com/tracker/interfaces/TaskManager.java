@@ -1,33 +1,34 @@
 package com.tracker.interfaces;
 
+import com.tracker.exception.TaskAddException;
 import com.tracker.task.Epic;
 import com.tracker.task.SubTask;
 import com.tracker.task.Task;
-
 import java.util.List;
 
 public interface TaskManager {
-    Task getTask(int id);
 
-    Epic getEpic(int id);
+  Task getTask(int id);
 
-    Task getSubtask(int id);
+  Epic getEpic(int id);
 
-    int add(Task task);
+  Task getSubtask(int id);
 
-    void addEpicSubTask(int epicId, SubTask subTask);
+  int add(Task task) throws TaskAddException;
 
-    int update(Task updateTask);
+  void addEpicSubTask(int epicId, SubTask subTask) throws TaskAddException;
 
-    void delete(Task task);
+  int update(Task updateTask);
 
-    List<Task> getTasks();
+  void delete(Task task);
 
-    List<Epic> getEpics();
+  List<Task> getTasks();
 
-    List<SubTask> getEpicSubtasks(int id);
+  List<Epic> getEpics();
 
-    List<SubTask> getSubtasks();
+  List<SubTask> getEpicSubtasks(int id);
 
-    List<Task> getHistory();
+  List<SubTask> getSubtasks();
+
+  List<Task> getHistory();
 }
