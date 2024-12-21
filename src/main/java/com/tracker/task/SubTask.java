@@ -6,12 +6,12 @@ import java.util.Map;
 
 public class SubTask extends Task {
 
-  protected TaskType type = TaskType.SUBTASK;
   private Integer epicId;
 
   public SubTask(
       String name, String description, Status status, Duration duration, LocalDateTime startTime) {
     super(name, description, status, duration, startTime);
+    type = TaskType.SUBTASK;
   }
 
   public Integer getEpicId() {
@@ -20,10 +20,6 @@ public class SubTask extends Task {
 
   public void setEpicId(Integer epicId) {
     this.epicId = epicId;
-  }
-
-  public TaskType getType() {
-    return type;
   }
 
   @Override

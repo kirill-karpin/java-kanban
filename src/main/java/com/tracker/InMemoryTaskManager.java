@@ -3,6 +3,7 @@ package com.tracker;
 import com.tracker.exception.TaskAddException;
 import com.tracker.interfaces.HistoryManager;
 import com.tracker.interfaces.TaskManager;
+import com.tracker.result.Result;
 import com.tracker.task.Epic;
 import com.tracker.task.Status;
 import com.tracker.task.SubTask;
@@ -48,15 +49,21 @@ public class InMemoryTaskManager implements TaskManager {
   @Override
   public Epic getEpic(int id) {
     Epic epic = epics.get(id);
-    historyManager.addTask(epic);
-    return epic;
+    if (epic != null) {
+      historyManager.addTask(epic);
+      return epic;
+    }
+    return null;
   }
 
   @Override
   public SubTask getSubtask(int id) {
     SubTask task = subTasks.get(id);
-    historyManager.addTask(task);
-    return task;
+    if (task != null) {
+      historyManager.addTask(task);
+      return task;
+    }
+    return null;
   }
 
   @Override
@@ -70,19 +77,22 @@ public class InMemoryTaskManager implements TaskManager {
         epics.put(epic.getId(), epic);
         break;
       case SUBTASK:
-        if (!validateOverlapTask(task)) {
-          throw new TaskAddException("Overlapping task: " + task);
+        Result validateSubtaskResult = validateOverlapTask(task);
+        if (!validateSubtaskResult.isSuccess()) {
+          throw new TaskAddException(validateSubtaskResult.getErrorMessage());
         }
 
         SubTask subTask = (SubTask) task;
+        subTask.setId(getNewId());
         subTasks.put(task.getId(), subTask);
         if (task.getStartTime() != null) {
           allTasks.add(task);
         }
         break;
       case TASK:
-        if (!validateOverlapTask(task)) {
-          throw new TaskAddException("Overlapping task: " + task);
+        Result validateResult = validateOverlapTask(task);
+        if (!validateResult.isSuccess()) {
+          throw new TaskAddException(validateResult.getErrorMessage());
         }
         task.setId(getNewId());
         tasks.put(task.getId(), task);
@@ -97,15 +107,21 @@ public class InMemoryTaskManager implements TaskManager {
     return task.getId();
   }
 
-  private boolean validateOverlapTask(Task task) {
+  private Result validateOverlapTask(Task task) {
     Set<Task> prioritizedTasks = getPrioritizedTasks();
+    Result result = new Result();
     if (task.getStartTime() == null) {
-      return true;
+      return result;
     }
 
     Optional<Task> overlappingTask =
         prioritizedTasks.stream().filter(t -> t.isOverlap(task)).findFirst();
-    return overlappingTask.isEmpty();
+    if (overlappingTask.isPresent()) {
+      overlappingTask.ifPresent(
+          t -> result.addError("Task overlap with task: id: " + t.getId() + " Name: " + t.getName())
+      );
+    }
+    return result;
   }
 
   @Override
@@ -123,7 +139,9 @@ public class InMemoryTaskManager implements TaskManager {
         SubTask updateSubTask = (SubTask) updateTask;
         subTasks.put(id, updateSubTask);
         Epic epicUpdate = epics.get(updateSubTask.getEpicId());
-        epicUpdate.setStatus(getEpicStatus(epicUpdate));
+        if (epicUpdate != null) {
+          epicUpdate.setStatus(getEpicStatus(epicUpdate));
+        }
         break;
       case TASK:
         tasks.put(id, updateTask);
