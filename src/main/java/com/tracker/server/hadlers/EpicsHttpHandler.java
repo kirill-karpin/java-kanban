@@ -5,6 +5,7 @@ import com.tracker.exception.RequestException;
 import com.tracker.exception.TaskAddException;
 import com.tracker.interfaces.TaskManager;
 import com.tracker.server.HandlerResult;
+import com.tracker.server.MethodEnum;
 import com.tracker.task.Epic;
 import com.tracker.task.SubTask;
 import com.tracker.task.Task;
@@ -23,8 +24,8 @@ public class EpicsHttpHandler extends BaseHttpHandler {
   public HandlerResult doRequest(HttpExchange exchange) throws RequestException {
     HandlerResult result = new HandlerResult();
     Map<String, String> pathParams = parsePath(exchange.getRequestURI().getPath());
-    switch (exchange.getRequestMethod()) {
-      case "GET":
+    switch (MethodEnum.valueOf(exchange.getRequestMethod())) {
+      case GET:
 
         if (pathParams.containsKey("id")) {
           int id = Integer.parseInt(pathParams.get("id"));
@@ -44,7 +45,7 @@ public class EpicsHttpHandler extends BaseHttpHandler {
         }
 
         break;
-      case "POST":
+      case POST:
 
         try {
           Optional<Epic> epicOptional = parseBody(exchange, Epic.class);
@@ -65,7 +66,7 @@ public class EpicsHttpHandler extends BaseHttpHandler {
         }
 
         break;
-      case "DELETE":
+      case DELETE:
         deleteEpicById(Integer.parseInt(pathParams.get("id")));
         break;
       default:

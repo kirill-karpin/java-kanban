@@ -5,6 +5,7 @@ import com.tracker.exception.RequestException;
 import com.tracker.exception.TaskAddException;
 import com.tracker.interfaces.TaskManager;
 import com.tracker.server.HandlerResult;
+import com.tracker.server.MethodEnum;
 import com.tracker.task.SubTask;
 import com.tracker.task.Task;
 import java.io.IOException;
@@ -22,8 +23,8 @@ public class SubTasksHttpHandler extends BaseHttpHandler {
   public HandlerResult doRequest(HttpExchange exchange) throws RequestException {
     HandlerResult result = new HandlerResult();
     Map<String, String> pathParams = parsePath(exchange.getRequestURI().getPath());
-    switch (exchange.getRequestMethod()) {
-      case "GET":
+    switch (MethodEnum.valueOf(exchange.getRequestMethod())) {
+      case GET:
         if (pathParams.containsKey("id")) {
           result.setData(getSubTaskById(Integer.parseInt(pathParams.get("id"))));
         } else {
@@ -31,7 +32,7 @@ public class SubTasksHttpHandler extends BaseHttpHandler {
         }
 
         break;
-      case "POST":
+      case POST:
 
         try {
           Optional<SubTask> taskOptional = parseBody(exchange, SubTask.class);
@@ -51,7 +52,7 @@ public class SubTasksHttpHandler extends BaseHttpHandler {
           throw new RequestException("SubTask create error: " + e.getMessage(), 406);
         }
         break;
-      case "DELETE":
+      case DELETE:
         deleteSubTask(Integer.parseInt(pathParams.get("id")));
         break;
       default:

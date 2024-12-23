@@ -33,26 +33,25 @@ public abstract class BaseHttpHandler implements HttpHandler, HandlerInterface {
     h.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
     byte[] resp = text.getBytes(StandardCharsets.UTF_8);
     h.sendResponseHeaders(result.getCode(), resp.length);
-    h.getResponseBody().write(resp);
+    if (!text.isEmpty()) {
+      h.getResponseBody().write(resp);
+    }
     h.close();
   }
 
   @Override
   public void handle(HttpExchange exchange) throws IOException {
+    HandlerResult result = new HandlerResult();
     try {
 
-      HandlerResult result = doRequest(exchange);
-      send(exchange, result);
+      result = doRequest(exchange);
 
     } catch (RequestException e) {
 
-      HandlerResult result = new HandlerResult();
       result.setCode(e.getCode());
       result.addError(e.getMessage());
-
-      send(exchange, result);
     }
-
+    send(exchange, result);
   }
 
   public String toJson(Object obj) {

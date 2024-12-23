@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.tracker.exception.RequestException;
 import com.tracker.interfaces.TaskManager;
 import com.tracker.server.HandlerResult;
+import com.tracker.server.MethodEnum;
 import com.tracker.task.Task;
 import java.util.Collection;
 
@@ -16,8 +17,8 @@ public class HistoryHttpHandler extends BaseHttpHandler {
   @Override
   public HandlerResult doRequest(HttpExchange exchange) throws RequestException {
     HandlerResult result = new HandlerResult();
-    switch (exchange.getRequestMethod()) {
-      case "GET":
+    switch (MethodEnum.valueOf(exchange.getRequestMethod())) {
+      case GET:
         result.setData(getHistory());
         break;
       default:
