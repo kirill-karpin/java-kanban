@@ -5,6 +5,7 @@ import com.tracker.task.Epic;
 import com.tracker.task.SubTask;
 import com.tracker.task.Task;
 import java.util.List;
+import java.util.Set;
 
 public interface TaskManager {
 
@@ -12,7 +13,7 @@ public interface TaskManager {
 
   Epic getEpic(int id);
 
-  Task getSubtask(int id);
+  SubTask getSubtask(int id);
 
   int add(Task task) throws TaskAddException;
 
@@ -31,4 +32,6 @@ public interface TaskManager {
   List<SubTask> getSubtasks();
 
   List<Task> getHistory();
+
+  Set<Task> getPrioritizedTasks();
 }

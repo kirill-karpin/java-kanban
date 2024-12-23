@@ -7,12 +7,11 @@ import java.util.Collection;
 
 public class Epic extends Task {
 
-  protected TaskType type = TaskType.EPIC;
-
   protected Collection<Integer> subTasksIds = new ArrayList<>();
 
   public Epic(String name, String description) {
     super(name, description, Status.NEW);
+    type = TaskType.EPIC;
   }
 
   public void addSubTask(Integer id) {
@@ -29,10 +28,6 @@ public class Epic extends Task {
 
   public void setSubTasks(Collection<Integer> subTasks) {
     this.subTasksIds = subTasks;
-  }
-
-  public TaskType getType() {
-    return type;
   }
 
   @Override
